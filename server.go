@@ -137,7 +137,7 @@ func (server *Server) Close() {
 func (server *Server) startHTTPServers() {
 	server.serverEntryPoints = server.buildEntryPoints(server.globalConfiguration)
 	for newServerEntryPointName, newServerEntryPoint := range server.serverEntryPoints {
-		serverMiddlewares := []negroni.Handler{server.loggerMiddleware, metrics}
+		serverMiddlewares := []negroni.Handler{middlewares.NewNragent(server.globalConfiguration.NrAppName, server.globalConfiguration.NrSecretKey), server.loggerMiddleware, metrics}
 		if server.globalConfiguration.EntryPoints[newServerEntryPointName].Auth != nil {
 			authMiddleware, err := middlewares.NewAuthenticator(server.globalConfiguration.EntryPoints[newServerEntryPointName].Auth)
 			if err != nil {
