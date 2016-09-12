@@ -25,7 +25,7 @@ deployment:
   aws:
     branch: master
     commands:
-      - eval "$(aws ecr get-login --region us-east-1)"
+      - eval "$(aws ecr get-login --region eu-west-1)"
       - docker build -t 074067892588.dkr.ecr.us-east-1.amazonaws.com/wgs/traefik:master .
       - docker push 074067892588.dkr.ecr.us-east-1.amazonaws.com/wgs/traefik:master
 
