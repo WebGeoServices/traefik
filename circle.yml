@@ -21,16 +21,16 @@ dependencies:
     - sudo pip install pymdown-extensions
 #    - go get github.com/tcnksm/ghr
     - make validate
-  override:
-    - sudo make binary
+#  override:
+#    - sudo make binary
 
 test:
   override:
     - sudo make test-unit
-    - sudo make test-integration
+#    - sudo make test-integration
   post:
-    - make binary
-    - make image
+    - sudo make binary
+    - sudo make image
 
 #deployment:
 #  hub:
