@@ -22,12 +22,12 @@ dependencies:
 #    - go get github.com/tcnksm/ghr
     - make validate
   override:
-    - make binary
+    - sudo make binary
 
 test:
   override:
-    - make test-unit
-    - make test-integration
+    - sudo make test-unit
+    - sudo make test-integration
   post:
     - make binary
     - make image
