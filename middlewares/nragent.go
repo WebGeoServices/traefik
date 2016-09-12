@@ -5,11 +5,13 @@ import (
 	"net/http"
 )
 
+// Nragent is a middleware wich send information on Newrelic for all requests
 type Nragent struct {
 	Application *newrelic.Application
 	Transaction *newrelic.Transaction
 }
 
+// NewNrAgent returns an initialized NrAgent.
 func NewNragent(appname string, secretkey string) *Nragent {
 	config := newrelic.NewConfig(appname, secretkey)
 	config.Enabled = true
