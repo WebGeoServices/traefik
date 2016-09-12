@@ -1,13 +1,18 @@
+#machine:
+#  pre:
+#    - sudo docker -d -e lxc -s btrfs -H tcp://0.0.0.0:2375:
+#        background: true
+#    - curl --retry 15 --retry-delay 3 -v http://172.17.42.1:2375/version
+#  environment:
+#    REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+#    DOCKER_HOST: tcp://172.17.42.1:2375
+#    MAKE_DOCKER_HOST: $DOCKER_HOST
+#    VERSION: v1.0.alpha.$CIRCLE_BUILD_NUM
 machine:
   pre:
-    - sudo docker -d -e lxc -s btrfs -H tcp://0.0.0.0:2375:
-        background: true
-    - curl --retry 15 --retry-delay 3 -v http://172.17.42.1:2375/version
-  environment:
-    REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-    DOCKER_HOST: tcp://172.17.42.1:2375
-    MAKE_DOCKER_HOST: $DOCKER_HOST
-    VERSION: v1.0.alpha.$CIRCLE_BUILD_NUM
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+  services:
+    - docker
 
 dependencies:
   pre:
@@ -25,12 +30,12 @@ test:
     - make crossbinary
     - make image
 
-deployment:
-  hub:
-    branch: master
-    commands:
-      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --prerelease ${VERSION} dist/
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push ${REPO,,}:latest
-      - docker tag ${REPO,,}:latest ${REPO,,}:${VERSION}
-      - docker push ${REPO,,}:${VERSION}
+#deployment:
+#  hub:
+#    branch: master
+#    commands:
+#      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME --prerelease ${VERSION} dist/
+#      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+#      - docker push ${REPO,,}:latest
+#      - docker tag ${REPO,,}:latest ${REPO,,}:${VERSION}
+#      - docker push ${REPO,,}:${VERSION}
