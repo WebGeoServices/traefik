@@ -11,7 +11,7 @@ type Nragent struct {
 	Transaction *newrelic.Transaction
 }
 
-// NewNrAgent returns an initialized NrAgent.
+// NewNragent returns an initialized NrAgent.
 func NewNragent(appname string, secretkey string) *Nragent {
 	config := newrelic.NewConfig(appname, secretkey)
 	config.Enabled = true
