@@ -10,12 +10,9 @@
 #    VERSION: v1.0.alpha.$CIRCLE_BUILD_NUM
 machine:
   pre:
-    - sudo service docker stop
-    - sudo curl https://get.docker.com/builds/Linux/x86_64/docker-1.10.1 -o /usr/bin/docker
-    - sudo chmod +x /usr/bin/docker
-    - sudo service docker start
-#  services:
-#    - docker
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+  services:
+    - docker
 
 dependencies:
   pre:
