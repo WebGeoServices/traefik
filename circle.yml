@@ -1,13 +1,3 @@
-#machine:
-#  pre:
-#    - sudo docker -d -e lxc -s btrfs -H tcp://0.0.0.0:2375:
-#        background: true
-#    - curl --retry 15 --retry-delay 3 -v http://172.17.42.1:2375/version
-#  environment:
-#    REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-#    DOCKER_HOST: tcp://172.17.42.1:2375
-#    MAKE_DOCKER_HOST: $DOCKER_HOST
-#    VERSION: v1.0.alpha.$CIRCLE_BUILD_NUM
 machine:
   pre:
     - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
@@ -19,7 +9,6 @@ dependencies:
     - docker version
     - sudo pip install mkdocs
     - sudo pip install pymdown-extensions
-#    - go get github.com/tcnksm/ghr
     - sudo make validate
   override:
     - sudo make binary
@@ -31,6 +20,14 @@ test:
   post:
     - sudo make binary
     - sudo make image
+
+deployment:
+  aws:
+    branch: master
+    commands:
+      - eval "$(aws ecr get-login --region us-east-1)"
+      - docker build -t 074067892588.dkr.ecr.us-east-1.amazonaws.com/wgs/traefik:master .
+      - docker push 074067892588.dkr.ecr.us-east-1.amazonaws.com/wgs/traefik:master
 
 #deployment:
 #  hub:
