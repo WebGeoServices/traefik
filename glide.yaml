@@ -103,3 +103,4 @@ import:
 - package: github.com/satori/go.uuid
   version: ^1.1.0
 - package: github.com/newrelic/go-agent
+- package: github.com/libkermit/docker-check
