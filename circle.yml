@@ -20,7 +20,7 @@ dependencies:
     - sudo pip install mkdocs
     - sudo pip install pymdown-extensions
 #    - go get github.com/tcnksm/ghr
-    - make validate
+    - sudo make validate
 #  override:
 #    - sudo make binary
 
