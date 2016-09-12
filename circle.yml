@@ -17,8 +17,8 @@ machine:
 dependencies:
   pre:
     - docker version
-    - pip install --user mkdocs
-    - pip install --user pymdown-extensions
+    - sudo pip install mkdocs
+    - sudo pip install pymdown-extensions
 #    - go get github.com/tcnksm/ghr
     - make validate
   override:
