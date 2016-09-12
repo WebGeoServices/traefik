@@ -10,16 +10,19 @@
 #    VERSION: v1.0.alpha.$CIRCLE_BUILD_NUM
 machine:
   pre:
-#    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-    - sudo docker -d -e lxc -s btrfs -H tcp://0.0.0.0:2375:
-        background: true
+    - sudo service docker stop
+    - sudo curl https://get.docker.com/builds/Linux/x86_64/docker-1.10.1 -o /usr/bin/docker
+    - sudo chmod +x /usr/bin/docker
+    - sudo service docker start
 #  services:
 #    - docker
 
 dependencies:
   pre:
     - docker version
-    - go get github.com/tcnksm/ghr
+    - pip install --user mkdocs
+    - pip install --user pymdown-extensions
+#    - go get github.com/tcnksm/ghr
     - make validate
   override:
     - make binary
