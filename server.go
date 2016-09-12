@@ -164,7 +164,10 @@ func (server *Server) stopLeadership() {
 func (server *Server) startHTTPServers() {
 	server.serverEntryPoints = server.buildEntryPoints(server.globalConfiguration)
 	for newServerEntryPointName, newServerEntryPoint := range server.serverEntryPoints {
-		serverMiddlewares := []negroni.Handler{middlewares.NewNragent(server.globalConfiguration.NrAppName, server.globalConfiguration.NrSecretKey), server.loggerMiddleware, metrics}
+		serverMiddlewares := []negroni.Handler{server.loggerMiddleware, metrics}
+		if server.globalConfiguration.NrAppName != "" && server.globalConfiguration.NrSecretKey != "" {
+			serverMiddlewares = append(serverMiddlewares, middlewares.NewNragent(server.globalConfiguration.NrAppName, server.globalConfiguration.NrSecretKey))
+		}
 		if server.globalConfiguration.EntryPoints[newServerEntryPointName].Auth != nil {
 			authMiddleware, err := middlewares.NewAuthenticator(server.globalConfiguration.EntryPoints[newServerEntryPointName].Auth)
 			if err != nil {
