@@ -23,7 +23,7 @@ test:
 
 deployment:
   aws:
-    branch: master
+    branch: add_newrelic_monitoring
     commands:
       - eval "$(aws ecr get-login --region eu-west-1)"
       - docker build -t 074067892588.dkr.ecr.us-east-1.amazonaws.com/wgs/traefik:master .
