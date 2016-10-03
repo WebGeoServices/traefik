@@ -75,14 +75,14 @@ func SetBackend2NameMap(newMap *map[string]string) {
 }
 
 func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	if l.file == nil {
+	/*if l.file == nil {
 		next(rw, r)
-	} else {
+	} else {*/
 		reqid := strconv.FormatUint(atomic.AddUint64(&reqidCounter, 1), 10)
 		r.Header[loggerReqidHeader] = []string{reqid}
 		defer deleteReqid(r, reqid)
 		frontendBackendLoggingHandler{reqid, l.file, next}.ServeHTTP(rw, r)
-	}
+	//}
 }
 
 // Delete a reqid from the map and the request's headers
