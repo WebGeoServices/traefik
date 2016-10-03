@@ -520,6 +520,7 @@ func (server *Server) loadConfig(configurations configs, globalConfiguration Glo
 
 	backends := map[string]http.Handler{}
 	backend2FrontendMap := map[string]string{}
+	backend2NameMap := map[string]string{}
 	for _, configuration := range configurations {
 		frontendNames := sortedFrontendNamesForConfig(configuration)
 	frontend:
@@ -612,6 +613,7 @@ func (server *Server) loadConfig(configurations configs, globalConfiguration Glo
 									continue frontend
 								}
 								backend2FrontendMap[url.String()] = frontendName
+								backend2NameMap[url.String()] = serverName
 								log.Debugf("Creating server %s at %s with weight %d", serverName, url.String(), server.Weight)
 								if err := rebalancer.UpsertServer(url, roundrobin.Weight(server.Weight)); err != nil {
 									log.Errorf("Error adding server %s to load balancer: %v", server.URL, err)
@@ -634,6 +636,7 @@ func (server *Server) loadConfig(configurations configs, globalConfiguration Glo
 									continue frontend
 								}
 								backend2FrontendMap[url.String()] = frontendName
+								backend2NameMap[url.String()] = serverName
 								log.Debugf("Creating server %s at %s with weight %d", serverName, url.String(), server.Weight)
 								if err := rr.UpsertServer(url, roundrobin.Weight(server.Weight)); err != nil {
 									log.Errorf("Error adding server %s to load balancer: %v", server.URL, err)
@@ -698,6 +701,7 @@ func (server *Server) loadConfig(configurations configs, globalConfiguration Glo
 		}
 	}
 	middlewares.SetBackend2FrontendMap(&backend2FrontendMap)
+	middlewares.SetBackend2NameMap(&backend2NameMap)
 	//sort routes
 	for _, serverEntryPoint := range serverEntryPoints {
 		serverEntryPoint.httpRouter.GetHandler().SortRoutes()

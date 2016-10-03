@@ -39,6 +39,7 @@ var (
 	reqidCounter        uint64       // Request ID
 	infoRwMap           = cmap.New() // Map of reqid to response writer
 	backend2FrontendMap *map[string]string
+	backend2NameMap *map[string]string
 )
 
 // logInfoResponseWriter is a wrapper of type http.ResponseWriter
@@ -58,14 +59,19 @@ func NewLogger(file string) *Logger {
 		if err != nil {
 			log.Error("Error opening file", err)
 		}
-		return &Logger{fi}
+		return &Logger{file:fi}
 	}
-	return &Logger{nil}
+	return &Logger{file: nil}
 }
 
 // SetBackend2FrontendMap is called by server.go to set up frontend translation
 func SetBackend2FrontendMap(newMap *map[string]string) {
 	backend2FrontendMap = newMap
+}
+
+
+func SetBackend2NameMap(newMap *map[string]string) {
+	backend2NameMap = newMap
 }
 
 func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -82,6 +88,7 @@ func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.Ha
 // Delete a reqid from the map and the request's headers
 func deleteReqid(r *http.Request, reqid string) {
 	infoRwMap.Remove(reqid)
+	delete(r.Header, "X-Traefik-backName")
 	delete(r.Header, loggerReqidHeader)
 }
 
@@ -90,8 +97,9 @@ func saveBackendNameForLogger(r *http.Request, backendName string) {
 	if reqidHdr := r.Header[loggerReqidHeader]; len(reqidHdr) == 1 {
 		reqid := reqidHdr[0]
 		if infoRw, ok := infoRwMap.Get(reqid); ok {
+			r.Header["X-Traefik-backName"] = []string{backendName}
 			infoRw.(*logInfoResponseWriter).SetBackend(backendName)
-			infoRw.(*logInfoResponseWriter).SetFrontend((*backend2FrontendMap)[backendName])
+			infoRw.(*logInfoResponseWriter).SetFrontend((*backend2NameMap)[backendName])
 		}
 	}
 }
@@ -140,10 +148,11 @@ func (fblh frontendBackendLoggingHandler) ServeHTTP(rw http.ResponseWriter, req 
 
 	elapsed := time.Now().UTC().Sub(startTime.UTC())
 	elapsedMillis := elapsed.Nanoseconds() / 1000000
+
 	fmt.Fprintf(fblh.writer, `%s - %s [%s] "%s %s %s" %d %d "%s" "%s" %s "%s" "%s" %dms%s`,
 		host, username, ts, method, uri, proto, status, size, referer, agent, fblh.reqid, frontend, backend, elapsedMillis, "\n")
-
 }
+
 
 func (lirw *logInfoResponseWriter) Header() http.Header {
 	return lirw.rw.Header()
