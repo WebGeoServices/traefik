@@ -1,10 +1,10 @@
 package middlewares
 
 import (
+	"fmt"
 	"github.com/newrelic/go-agent"
 	"net/http"
 	"strings"
-	"fmt"
 )
 
 // Nragent is a middleware wich send information on Newrelic for all requests
@@ -40,16 +40,16 @@ func changeName(tr newrelic.ExternalSegment, req *http.Request) {
 		backendServer := reqbakNameHdr[0]
 		//backendName := (*backend2NameMap)[backendServer]
 		//nrName := strings.Split(backendName, "_")[1]
-		fmt.Println(backendServer+req.RequestURI)
-		tr.URL = backendServer+req.RequestURI
+		fmt.Println(backendServer + req.RequestURI)
+		tr.URL = backendServer + req.RequestURI
 	}
 	tr.End()
 }
 
-func external(txn newrelic.Transaction, req *http.Request) (*newrelic.ExternalSegment) /*(*http.Response, error)*/ {
+func external(txn newrelic.Transaction, req *http.Request) *newrelic.ExternalSegment /*(*http.Response, error)*/ {
 	extSeg := newrelic.ExternalSegment{
-        	StartTime: newrelic.StartSegmentNow(txn),
-        	//Request:   req,
+		StartTime: newrelic.StartSegmentNow(txn),
+		//Request:   req,
 		URL: "",
 	}
 	//extSeg := newrelic.StartExternalSegment(txn, req)
