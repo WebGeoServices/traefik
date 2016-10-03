@@ -69,6 +69,7 @@ func SetBackend2FrontendMap(newMap *map[string]string) {
 	backend2FrontendMap = newMap
 }
 
+// SetBackend2NameMap is called by server.go to set up Name translation
 func SetBackend2NameMap(newMap *map[string]string) {
 	backend2NameMap = newMap
 }

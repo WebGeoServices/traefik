@@ -23,15 +23,13 @@ func NewNragent(appname string, secretkey string) *Nragent {
 
 func (n *Nragent) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	path := r.URL.Path
-	api_path := strings.Split(path, "/")[1]
+	apiPath := strings.Split(path, "/")[1]
 	host := r.Host
-	txn := ((*n.Application).StartTransaction(host+"/"+api_path, rw, r)).(newrelic.Transaction)
+	txn := ((*n.Application).StartTransaction(host+"/"+apiPath, rw, r)).(newrelic.Transaction)
 	extSeg := external(txn, r)
 	n.Transaction = &txn
-	//defer changeName(*n.Transaction, r)
 	defer (*n.Transaction).End()
 	defer changeName(*extSeg, r)
-	//defer extSeg.End()
 	next(rw, r)
 }
 
