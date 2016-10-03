@@ -39,7 +39,7 @@ var (
 	reqidCounter        uint64       // Request ID
 	infoRwMap           = cmap.New() // Map of reqid to response writer
 	backend2FrontendMap *map[string]string
-	backend2NameMap     *map[string]string
+	backend2NameMap *map[string]string
 )
 
 // logInfoResponseWriter is a wrapper of type http.ResponseWriter
@@ -59,9 +59,9 @@ func NewLogger(file string) *Logger {
 		if err != nil {
 			log.Error("Error opening file", err)
 		}
-		return &Logger{file: fi}
+		return &Logger{fi}
 	}
-	return &Logger{file: nil}
+	return &Logger{nil}
 }
 
 // SetBackend2FrontendMap is called by server.go to set up frontend translation
@@ -99,7 +99,7 @@ func saveBackendNameForLogger(r *http.Request, backendName string) {
 		if infoRw, ok := infoRwMap.Get(reqid); ok {
 			r.Header["X-Traefik-backName"] = []string{backendName}
 			infoRw.(*logInfoResponseWriter).SetBackend(backendName)
-			infoRw.(*logInfoResponseWriter).SetFrontend((*backend2NameMap)[backendName])
+			infoRw.(*logInfoResponseWriter).SetFrontend((*backend2FrontendMap)[backendName])
 		}
 	}
 }
@@ -152,6 +152,7 @@ func (fblh frontendBackendLoggingHandler) ServeHTTP(rw http.ResponseWriter, req 
 	fmt.Fprintf(fblh.writer, `%s - %s [%s] "%s %s %s" %d %d "%s" "%s" %s "%s" "%s" %dms%s`,
 		host, username, ts, method, uri, proto, status, size, referer, agent, fblh.reqid, frontend, backend, elapsedMillis, "\n")
 }
+
 
 func (lirw *logInfoResponseWriter) Header() http.Header {
 	return lirw.rw.Header()
