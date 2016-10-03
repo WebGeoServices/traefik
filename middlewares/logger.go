@@ -39,7 +39,7 @@ var (
 	reqidCounter        uint64       // Request ID
 	infoRwMap           = cmap.New() // Map of reqid to response writer
 	backend2FrontendMap *map[string]string
-	backend2NameMap *map[string]string
+	backend2NameMap     *map[string]string
 )
 
 // logInfoResponseWriter is a wrapper of type http.ResponseWriter
@@ -59,7 +59,7 @@ func NewLogger(file string) *Logger {
 		if err != nil {
 			log.Error("Error opening file", err)
 		}
-		return &Logger{file:fi}
+		return &Logger{file: fi}
 	}
 	return &Logger{file: nil}
 }
@@ -68,7 +68,6 @@ func NewLogger(file string) *Logger {
 func SetBackend2FrontendMap(newMap *map[string]string) {
 	backend2FrontendMap = newMap
 }
-
 
 func SetBackend2NameMap(newMap *map[string]string) {
 	backend2NameMap = newMap
@@ -152,7 +151,6 @@ func (fblh frontendBackendLoggingHandler) ServeHTTP(rw http.ResponseWriter, req 
 	fmt.Fprintf(fblh.writer, `%s - %s [%s] "%s %s %s" %d %d "%s" "%s" %s "%s" "%s" %dms%s`,
 		host, username, ts, method, uri, proto, status, size, referer, agent, fblh.reqid, frontend, backend, elapsedMillis, "\n")
 }
-
 
 func (lirw *logInfoResponseWriter) Header() http.Header {
 	return lirw.rw.Header()
