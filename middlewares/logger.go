@@ -78,10 +78,10 @@ func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.Ha
 	/*if l.file == nil {
 		next(rw, r)
 	} else {*/
-		reqid := strconv.FormatUint(atomic.AddUint64(&reqidCounter, 1), 10)
-		r.Header[loggerReqidHeader] = []string{reqid}
-		defer deleteReqid(r, reqid)
-		frontendBackendLoggingHandler{reqid, l.file, next}.ServeHTTP(rw, r)
+	reqid := strconv.FormatUint(atomic.AddUint64(&reqidCounter, 1), 10)
+	r.Header[loggerReqidHeader] = []string{reqid}
+	defer deleteReqid(r, reqid)
+	frontendBackendLoggingHandler{reqid, l.file, next}.ServeHTTP(rw, r)
 	//}
 }
 
