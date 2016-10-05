@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"github.com/newrelic/go-agent"
 	"net/http"
 	"strings"
