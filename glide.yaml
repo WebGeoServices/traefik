@@ -48,6 +48,7 @@ import:
   subpackages:
   - api
 - package: github.com/mailgun/manners
+  version: 2044499d03a03939225e861ba4700c9b113375a9
 - package: github.com/parnurzeal/gorequest
 - package: github.com/streamrail/concurrent-map
 - package: github.com/stretchr/testify

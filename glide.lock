@@ -1,5 +1,5 @@
-hash: fbf4fe912c1fb07bbc32577512b0db02568060a46877be5e14d91d73e6ead854
-updated: 2016-10-20T15:58:37.544492042+02:00
+hash: 85349172b4f15c93f952cd6c9ba8c806d61aac8be7af4a06d9f3f98eb6d5d5b3
+updated: 2016-10-20T16:09:27.118076071+02:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
@@ -136,7 +136,7 @@ imports:
 - name: github.com/libkermit/docker-check
   version: cbe0ef03b3d23070eac4d00ba8828f2cc7f7e5a3
 - name: github.com/mailgun/manners
-  version: fada45142db3f93097ca917da107aa3fad0ffcb5
+  version: 2044499d03a03939225e861ba4700c9b113375a9
 - name: github.com/mailgun/timetools
   version: fd192d755b00c968d312d23f521eb0cdc6f66bd0
 - name: github.com/mattn/go-shellwords
