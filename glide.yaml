@@ -23,6 +23,7 @@ import:
 - package: github.com/containous/staert
   version: 92329254783dc01174f03302d51d7cf2c9ff84cf
 - package: github.com/docker/engine-api
+  version: 62043eb79d581a32ea849645277023c550732e52
   subpackages:
   - client
   - types
@@ -55,6 +56,7 @@ import:
 - package: github.com/thoas/stats
 - package: github.com/unrolled/render
 - package: github.com/vdemeester/docker-events
+  version: be74d4929ec1ad118df54349fda4b0cba60f849b
 - package: github.com/vulcand/vulcand
   subpackages:
   - plugin/rewrite
@@ -71,6 +73,7 @@ import:
 - package: github.com/libkermit/docker
   version: 55e3595409924fcfbb850811e5a7cdbe8960a0b7
 - package: github.com/docker/docker
+  version: 534753663161334baba06f13b8efa4cad22b5bc5
   subpackages:
   - namesgenerator
 - package: github.com/go-check/check

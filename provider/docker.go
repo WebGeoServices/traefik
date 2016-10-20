@@ -37,7 +37,7 @@ const (
 	// SwarmAPIVersion is a constant holding the version of the Docker API traefik will use
 	SwarmAPIVersion string = "1.24"
 	// SwarmDefaultWatchTime is the duration of the interval when polling docker
-	SwarmDefaultWatchTime = 30 * time.Second
+	SwarmDefaultWatchTime = 15 * time.Second
 )
 
 var _ Provider = (*Docker)(nil)
